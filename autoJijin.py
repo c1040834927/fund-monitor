@@ -66,7 +66,7 @@ SHOW_DETAIL = True
 
 # ========== 推送配置区 ==========
 # Server酱 SendKey（留空则不启用）
-SERVERCHAN_KEY = "SCT3203T6Rw6GpKrzdAOjXtDfBZvQ3PR"  # 例如 "SCT123456"
+SERVERCHAN_KEY = os.environ.get('SERVERCHAN_KEY', '') or ''
 
 # 企业微信机器人 Webhook URL（留空则不启用）
 WECOM_WEBHOOK = ""   # 例如 "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxxx"
