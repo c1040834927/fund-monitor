@@ -1,0 +1,31 @@
+name: 基金行情监控
+
+on:
+  schedule:
+    # 每天 12:00 和 14:30 执行（北京时间）
+    # GitHub Actions 使用 UTC 时间，北京时间 = UTC + 8
+    - cron: '0 4 * * *'   # UTC 4:00 = 北京时间 12:00
+    - cron: '30 6 * * *'  # UTC 6:30 = 北京时间 14:30
+  workflow_dispatch:      # 允许手动触发（方便测试）
+
+jobs:
+  run-monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: 安装依赖
+        run: |
+          pip install akshare pandas requests
+
+      - name: 运行基金监控脚本
+        env:
+          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+        run: python autoJijin.py 
