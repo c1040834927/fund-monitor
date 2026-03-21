@@ -23,7 +23,7 @@ jobs:
 
       - name: 安装依赖
         run: |
-          pip install akshare pandas requests
+          pip install akshare pandas requests schedule
 
       - name: 运行基金监控脚本
         env:
