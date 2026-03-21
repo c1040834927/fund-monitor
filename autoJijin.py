@@ -1,7 +1,7 @@
 import akshare as ak
 import pandas as pd
 import schedule
-import time
+import time,os
 import warnings
 from datetime import datetime
 from typing import Dict, List, Tuple
