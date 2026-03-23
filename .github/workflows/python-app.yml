@@ -1,1 +1,13 @@
 
+name: Test Schedule
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'   # 每10分钟执行一次
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "当前时间 $(date)"
