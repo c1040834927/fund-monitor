@@ -4,13 +4,14 @@ on:
   schedule:
     # 每天 12:00 和 14:30 执行（北京时间）
     # GitHub Actions 使用 UTC 时间，北京时间 = UTC + 8
-    - cron: '0 4 * * 1-5'   # UTC 4:00 = 北京时间 12:00
-    - cron: '30 6 * * 1-5'  # UTC 6:30 = 北京时间 14:30
+    - cron: '0 4 * * 1-5'   # UTC 4:00 = 北京时间 12:00（周一到周五）
+    - cron: '30 6 * * 1-5'  # UTC 6:30 = 北京时间 14:30（周一到周五）
   workflow_dispatch:      # 允许手动触发（方便测试）
 
 jobs:
-  run-monitor:
+  run-monitor:  # 关键：修复缩进问题
     runs-on: ubuntu-latest
+    timeout-minutes: 10  # 新增：设置超时时间，避免任务卡死
 
     steps:
       - name: 检出代码
@@ -20,12 +21,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+          cache: 'pip'  # 新增：缓存pip依赖，加快运行速度
 
-      - name: 安装依赖
+      - name: 升级pip并安装依赖
         run: |
-          pip install akshare pandas requests schedule
+          python -m pip install --upgrade pip  # 新增：升级pip，避免旧版本安装失败
+          pip install akshare pandas requests schedule lxml beautifulsoup4  # 补充akshare依赖
+        continue-on-error: false  # 依赖安装失败则终止任务
 
       - name: 运行基金监控脚本
         env:
           SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
-        run: python autoJijin.py 
+        run: python autoJijin.py
+        continue-on-error: false
