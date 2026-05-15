@@ -5,7 +5,8 @@ import time,os
 import warnings
 from datetime import datetime
 from typing import Dict, List, Tuple
-import requests
+import requests 
+
 
 warnings.filterwarnings("ignore")  # 忽略 akshare 的一些警告
 
